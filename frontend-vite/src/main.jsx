@@ -1,4 +1,3 @@
-// // src/main.jsx
 // src/main.jsx
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
@@ -11,30 +10,25 @@ import './index.css';
 
 function App() {
   const [session, setSession] = useState(null);
-  const [backendStatus, setBackendStatus] = useState("Checking...");
+  const [backendStatus, setBackendStatus] = useState("Checking backend...");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // ✅ Check backend connection
+    // ✅ Confirm backend is reachable using Netlify env variable
     const apiBase = import.meta.env.VITE_API_URL;
     fetch(`${apiBase}/ping`)
       .then(res => res.json())
-      .then(data => setBackendStatus(`Backend OK: ${JSON.stringify(data)}`))
-      .catch(err => setBackendStatus(`Backend Error: ${err.message}`));
+      .then(data => setBackendStatus(`✅ Backend says: ${data.message}`))
+      .catch(err => setBackendStatus(`❌ Backend error: ${err.message}`));
 
-    // ✅ Get initial Supabase session
+    // ✅ Supabase session logic
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
     });
 
-    // ✅ Listen for Supabase auth changes
     const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
-      if (newSession) {
-        navigate('/'); // stay on dashboard after login/register
-      } else {
-        navigate('/'); // stay on dashboard after logout too
-      }
+      navigate('/');
     });
 
     return () => {
@@ -44,8 +38,13 @@ function App() {
 
   return (
     <>
-      {/* ✅ Show backend status at the top for debugging */}
-      <div style={{ padding: "10px", background: "#eee", fontSize: "14px" }}>
+      {/* ✅ Show backend status for debugging */}
+      <div style={{
+        padding: "10px",
+        background: "#f0f0f0",
+        fontSize: "14px",
+        borderBottom: "1px solid #ccc"
+      }}>
         {backendStatus}
       </div>
 
@@ -62,9 +61,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </BrowserRouter>
 );
 
-serviceWorkerRegistration.register(); // ✅ enables caching and offline
-
-
+serviceWorkerRegistration.register();
 
 
 
