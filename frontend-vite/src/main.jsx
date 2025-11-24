@@ -10,16 +10,15 @@ import './index.css';
 
 function App() {
   const [session, setSession] = useState(null);
-  const [backendStatus, setBackendStatus] = useState("Checking backend...");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // ✅ Confirm backend is reachable using Netlify env variable
+    // ✅ Optional: silently confirm backend is reachable
     const apiBase = import.meta.env.VITE_API_URL;
     fetch(`${apiBase}/ping`)
       .then(res => res.json())
-      .then(data => setBackendStatus(`✅ Backend says: ${data.message}`))
-      .catch(err => setBackendStatus(`❌ Backend error: ${err.message}`));
+      .then(data => console.log("Backend says:", data.message))
+      .catch(err => console.error("Backend error:", err.message));
 
     // ✅ Supabase session logic
     supabase.auth.getSession().then(({ data }) => {
@@ -37,21 +36,9 @@ function App() {
   }, [navigate]);
 
   return (
-    <>
-      {/* ✅ Show backend status for debugging */}
-      <div style={{
-        padding: "10px",
-        background: "#f0f0f0",
-        fontSize: "14px",
-        borderBottom: "1px solid #ccc"
-      }}>
-        {backendStatus}
-      </div>
-
-      <Routes>
-        <Route path="/" element={<Dashboard session={session} />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Dashboard session={session} />} />
+    </Routes>
   );
 }
 
@@ -62,7 +49,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 );
 
 serviceWorkerRegistration.register();
-
 
 
 // import React, { useEffect, useState } from 'react';
