@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Excel Access Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --card: #121826;
+      --text: #e6eefc;
+      --muted: #9fb3d1;
+      --accent: #3b82f6;
+      --accent-2: #22d3ee;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu; background: var(--bg); color: var(--text); }
+    header { padding: 20px; border-bottom: 1px solid #1f2937; display:flex; justify-content: space-between; align-items:center; }
+    .brand { font-weight: 700; letter-spacing: 0.5px; }
+    .container { max-width: 960px; margin: 30px auto; padding: 0 16px; }
+    .card { background: var(--card); border: 1px solid #1f2937; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+    button { background: var(--accent); border:none; color: white; padding: 10px 16px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+    button.secondary { background: #1f2937; color: var(--text); }
+    button.warn { background: var(--warning); color: #111827; }
+    .row { display:flex; gap: 12px; flex-wrap: wrap; }
+    input, .token { background: #0f172a; border: 1px solid #1f2937; border-radius: 8px; color: var(--text); padding: 10px; width: 100%; }
+    .muted { color: var(--muted); font-size: 0.9rem; }
+    .badge { padding: 4px 8px; border-radius: 999px; background: #1f2937; display:inline-block; margin-left: 6px; font-size: 0.8rem; color: var(--muted); }
+    .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+    /* Toasts */
+    #toasts { position: fixed; bottom: 24px; right: 24px; display:flex; flex-direction: column; gap: 8px; z-index: 1000; }
+    .toast { background: #0f172a; color: var(--text); border: 1px solid #1f2937; padding: 12px 16px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); min-width: 280px; display:flex; align-items:center; justify-content: space-between; }
+    .toast.ok { border-color: var(--success); }
+    .toast.err { border-color: var(--danger); }
+    .toast.warn { border-color: var(--warning); color: #111827; background: #fef3c7; }
+    .toast .close { margin-left: 12px; cursor: pointer; }
+    .progress { height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 999px; margin-top: 8px; animation: progress 3s linear forwards; }
+    @keyframes progress { from { width: 100%; } to { width: 0%; } }
+
+    /* Loading overlay */
+    #overlay { position: fixed; inset: 0; background: rgba(11,15,26,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 999; }
+    .spinner { width: 64px; height: 64px; border-radius: 50%; border: 5px solid #1f2937; border-top-color: var(--accent); animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <!-- <header>
+    <div class="brand">Excel Access Portal <span class="badge" id="roleBadge">anonymous</span></div>
+    <div class="row">
+      <button id="loginBtn">Login</button>
+      <button class="secondary" id="logoutBtn" style="display:none">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <h2>Public view</h2>
+        <p class="muted">Anyone can view or download the Excel file without logging in. Link expires quickly.</p>
+        <div class="row">
+          <button id="viewPublicBtn">Get public link</button>
+          <a id="publicLink" class="token" target="_blank" rel="noopener"></a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Authenticated download</h2>
+        <p class="muted">Logged-in users can get a tracked link.</p>
+        <div class="row">
+          <button id="downloadBtn">Get download link</button>
+          <a id="downloadLink" class="token" target="_blank" rel="noopener"></a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Admin/editor updates</h2>
+        <p class="muted">Apply cell changes to the workbook (requires admin or edit rights).</p>
+        <div class="row">
+          <input id="sheetInput" placeholder="Sheet name (e.g., Sheet1)">
+          <input id="cellInput" placeholder="Cell (e.g., A1)">
+          <input id="valueInput" placeholder="New value (e.g., 42)">
+        </div>
+        <div class="row">
+          <button class="warn" id="applyChangeBtn">Apply change</button>
+        </div>
+        <p class="muted" id="updateStatus"></p>
+      </div>
+
+      <div class="card">
+        <h2>Session & role</h2>
+        <p class="muted">Shows your current user role and edit capability.</p>
+        <div class="row">
+          <button id="whoamiBtn">Who am I?</button>
+          <span id="whoamiResult" class="token"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+ -->
+  <div id="overlay"><div class="spinner"></div></div>
+  <div id="toasts"></div>
+  <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
